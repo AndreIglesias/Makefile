@@ -7,9 +7,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Update Makefile on README
         run: |
+          mkdir -p docs/
           echo '```bash' > docs/README.md
           cat Makefile >> docs/README.md
           echo '```' >> docs/README.md
           cat docs/README.md
+
+      - name: Commit and push README
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: Update README with Makefile
