@@ -11,7 +11,8 @@ jobs:
       - name: Update Makefile on README
         run: |
           mkdir -p docs/
-          echo '```bash' > docs/README.md
+          echo '#Makefile' > docs/README.md
+          echo '```make' >> docs/README.md
           cat Makefile >> docs/README.md
           echo '```' >> docs/README.md
           cat docs/README.md
