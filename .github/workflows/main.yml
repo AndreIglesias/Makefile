@@ -1,0 +1,14 @@
+name: Update README
+
+on: [push]
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+	    run: |
+          echo '```bash' > docs/README.md
+          cat Makefile >> docs/README.md
+          echo '```' >> docs/README.md
+          cat docs/README.md
