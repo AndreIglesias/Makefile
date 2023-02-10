@@ -8,7 +8,7 @@
 #    By: ciglesia <ciglesia@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/20 17:00:07 by ciglesia          #+#    #+#              #
-#    Updated: 2021/06/12 01:39:46 by ciglesia         ###   ########.fr        #
+#    Updated: 2023/02/10 16:50:44 by ciglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -66,6 +66,7 @@ endif
 CC			=	/usr/bin/clang
 RM			=	/bin/rm -f
 ECHO		=	/bin/echo -e
+MKDIR		=	/bin/mkdir -p
 BOLD		=	"\e[1m"
 BLINK		=	 "\e[5m"
 RED			=	 "\e[38;2;255;0;0m"
@@ -87,9 +88,10 @@ E0M			=	 "\e[0m"
 #************************ MAIN COMPILATION *************************
 
 $(NAME)			:	ftlib $(OBJS)
+					@$(CC) $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS) $(INC_LIB)
 					@$(ECHO) $(BOLD)$(GREEN)'> Compiled'$(E0M)
 					@for font in $(DEPEND); do \
-						command -v $$font > /dev/null 2>&1 \
+						dpkg -s $$font > /dev/null 2>&1 \
 						|| echo >&2 "Could not find '$$font', you can install it with:\e[34m\e[1m Make dependencies\e[0m";  \
 					done
 
@@ -110,6 +112,9 @@ re				:	fclean all
 
 ftlib			:
 					@(cd $(SUB_MAKE) && $(MAKE))
+
+mkdepo			:
+					@$(MKDIR) $(DIROBJ)
 
 dependencies	:
 					sudo apt install -y $(DEPEND)
