@@ -8,7 +8,7 @@
 #    By: ciglesia <ciglesia@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/20 17:00:07 by ciglesia          #+#    #+#              #
-#    Updated: 2023/02/10 16:50:44 by ciglesia         ###   ########.fr        #
+#    Updated: 2023/02/10 16:53:25 by ciglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -87,7 +87,7 @@ E0M			=	 "\e[0m"
 
 #************************ MAIN COMPILATION *************************
 
-$(NAME)			:	ftlib $(OBJS)
+$(NAME)			:	mkdepo ftlib $(OBJS)
 					@$(CC) $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS) $(INC_LIB)
 					@$(ECHO) $(BOLD)$(GREEN)'> Compiled'$(E0M)
 					@for font in $(DEPEND); do \
