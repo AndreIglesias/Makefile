@@ -107,9 +107,9 @@ clean           :
 	                @(cd $(LIB) && $(MAKE) clean)
 	                @$(ECHO) $(BOLD)$(RED)'> '$(NAME)' directory        cleaned'$(E0M)
 
-all             :      $(NAME)
+all             :       $(NAME)
 
-fclean          :      clean
+fclean          :       clean
 	                @$(RM) $(NAME)
 	                @(cd $(LIB) && $(MAKE) fclean)
 	                @$(ECHO) $(BOLD)$(RED)'> Executable             removed'$(E0M)
