@@ -88,13 +88,13 @@ E0M         =   "\e[0m"
 
 #******************************* DEPS COMPILATION ********************************#
 
-%.o             :   $(foreach dir,$(DIRS),../$(dir)/%.c)
+%.o             :       $(foreach dir,$(DIRS),../$(dir)/%.c)
 	                @printf $(GREEN)"Generating "$(NAME)" objects... %-33.33s\r"$(E0M) $@
 	                @$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
 
 #******************************* MAIN COMPILATION ********************************#
 
-$(NAME)         :   ftlib $(OBJS)
+$(NAME)         :       ftlib $(OBJS)
 	                @$(CC) $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB_INC)
 	                @$(ECHO) $(BOLD)$(GREEN)'> '$(NAME)' Compiled'$(E0M)
 
@@ -105,14 +105,14 @@ clean           :
 	                @(cd $(LIB) && $(MAKE) clean)
 	                @$(ECHO) $(BOLD)$(RED)'> '$(NAME)' directory        cleaned'$(E0M)
 
-all             :  $(NAME)
+all             :      $(NAME)
 
-fclean          :  clean
+fclean          :      clean
 	                @$(RM) $(NAME)
 	                @(cd $(LIB) && $(MAKE) fclean)
 	                @$(ECHO) $(BOLD)$(RED)'> Executable             removed'$(E0M)
 
-re              :  fclean all
+re              :       fclean all
 
 ftlib           :
 	                @(cd $(LIB) && $(MAKE))
@@ -121,6 +121,6 @@ init            :
 	                @$(GIT) submodule init
 	                @$(GIT) submodule update
 
-.PHONY          :  all clean re fclean ftlib
+.PHONY          :       all clean re fclean ftlib
 
 -include $(DEPS)
