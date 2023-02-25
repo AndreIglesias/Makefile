@@ -6,117 +6,121 @@
 #    By: ciglesia <ciglesia@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/20 17:00:07 by ciglesia          #+#    #+#              #
-#    Updated: 2023/02/10 16:53:25 by ciglesia         ###   ########.fr        #
+#    Updated: 2023/02/25 10:44:41 by ciglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-NAME		=
+NAME        =                               # Name of the binary
 
 #****************** INC *******************#
 # General
-INC			=	./include/
+INC         =   ./include/                  # Project header files drectory
 
 # Libft
-SUB_MAKE	=	./libft/
-INCFT		=	./libft/
+LIB         =   ./libft/                    # Library to include
+LIB_H       =   ./libft/                    # Library header files directory
 
-INCLUDE		=	-O3 -I $(INCFT) -I $(INC)
+INCLUDE     =   -O3 -I $(LIB_H) -I $(INC)   # Header files
 
-INC_LIB		=	-L$(INCFT) -lft
+LIB_INC     =   -L$(LIB_H) -lft             # Include library
 
-DEPEND		=	# dependencies to install
+#****************** SRC *******************#
 
-#***************** SRC* *******************#
+DIRSRC      =   ./src/
+DIRFOO      :=   $(DIRSRC) #/foo/
 
-DIRSRC		=	./src/
-DIRFOO		=	$(DIRSRC) #/foo/
+DIRS        :=   $(DIRSRC) $(DIRFOO)
 
-SRC			=	# main.c
-FOO			=
+SRC         =   # main.c
+FOO         =
 
-SRCS		=	$(SRC) $(FOO)
+SRCS        :=   $(SRC) $(FOO)
 
 #***************** DEPS ******************#
 
-DIROBJ		=	./depo/
+DIROBJ      =   ./depo/
 
-OAUX		=	$(SRCS:%=$(DIROBJ)%)
-DEPS		=	$(OAUX:.c=.d)
-OBJS		=	$(OAUX:.c=.o)
+OAUX        =   $(SRCS:%=$(DIROBJ)%)
+DEPS        =   $(OAUX:.c=.d)
+OBJS        =   $(OAUX:.c=.o)
+
+#********************************* END OF CONFIG *********************************#
+
+.ONESHELL:
+
+$(info Creating directory...)
+$(shell mkdir -p $(DIROBJ))
 
 ifdef FLAGS
-	ifeq ($(FLAGS), no)
-CFLAGS		=
-	endif
-	ifeq ($(FLAGS), debug)
-CFLAGS		=	-Wall -Wextra -Werror -ansi -pedantic -g
-	endif
+    ifeq ($(FLAGS), no)
+CFLAGS      =
+    endif
+    ifeq ($(FLAGS), debug)
+CFLAGS      =   -Wall -Wextra -Werror -ansi -pedantic -g
+    endif
 else
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS      =   -Wall -Wextra -Werror
 endif
 
 ifdef VERB
-	ifeq ($(VERB), on)
-CFLAGS		+=	-DM_VERB
-	endif
+    ifeq ($(VERB), on)
+CFLAGS      +=  -DM_VERB
+    endif
 endif
 
-CC			=	/usr/bin/clang
-RM			=	/bin/rm -f
-ECHO		=	/bin/echo -e
-MKDIR		=	/bin/mkdir -p
-BOLD		=	"\e[1m"
-BLINK		=	 "\e[5m"
-RED			=	 "\e[38;2;255;0;0m"
-GREEN		=	 "\e[92m"
-BLUE		=	 "\e[34m"
-YELLOW		=	 "\e[33m"
-E0M			=	 "\e[0m"
+ifndef VERBOSE
+.SILENT:
+endif
 
-#************************ DEPS COMPILATION *************************
+ENV         =   /usr/bin/env
+CC          =   $(ENV) clang
+RM          =   $(ENV) rm -rf
+ECHO        =   $(ENV) echo -e
+MKDIR       =   $(ENV) mkdir -p
+GIT         =   $(ENV) git
+BOLD        =   "\e[1m"
+BLINK       =   "\e[5m"
+RED         =   "\e[38;2;255;0;0m"
+GREEN       =   "\e[92m"
+BLUE        =   "\e[34m"
+YELLOW      =   "\e[33m"
+E0M         =   "\e[0m"
 
-%.o				:	../$(DIRSRC)/%.c
-					@printf $(GREEN)"Generating project objects... %-33.33s\r" $@
-					@$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
+#******************************* DEPS COMPILATION ********************************#
 
-%.o				:	../$(DIRFOO)/%.c
-					@printf $(GREEN)"Generating project objects... %-33.33s\r" $@
-					@$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
+%.o             :   $(foreach dir,$(DIRS),../$(dir)/%.c)
+                    @printf $(GREEN)"Generating "$(NAME)" objects... %-33.33s\r"$(E0M) $@
+                    @$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
 
-#************************ MAIN COMPILATION *************************
+#******************************* MAIN COMPILATION ********************************#
 
-$(NAME)			:	mkdepo ftlib $(OBJS)
-					@$(CC) $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS) $(INC_LIB)
-					@$(ECHO) $(BOLD)$(GREEN)'> Compiled'$(E0M)
-					@for font in $(DEPEND); do \
-						dpkg -s $$font > /dev/null 2>&1 \
-						|| echo >&2 "Could not find '$$font', you can install it with:\e[34m\e[1m Make dependencies\e[0m";  \
-					done
+$(NAME)         :   ftlib $(OBJS)
+                    @$(CC) $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB_INC)
+                    @$(ECHO) $(BOLD)$(GREEN)'> '$(NAME)' Compiled'$(E0M)
 
-clean			:
-					@($(RM) $(OBJS))
-					@($(RM) $(DEPS))
-					@(cd $(SUB_MAKE) && $(MAKE) clean)
-					@$(ECHO) $(RED)'> Directory cleaned'$(E0M)
+clean            :
+                    @($(RM) $(OBJS))
+                    @($(RM) $(DEPS))
+                    @($(RM) $(DIROBJ))
+                    @(cd $(LIB) && $(MAKE) clean)
+                    @$(ECHO) $(BOLD)$(RED)'> '$(NAME)' directory        cleaned'$(E0M)
 
-all				:	$(NAME)
+all              :  $(NAME)
 
-fclean			:	clean
-					@$(RM) $(NAME)
-					@(cd $(SUB_MAKE) && $(MAKE) fclean)
-					@$(ECHO) $(RED)'> Executable removed'$(E0M)
+fclean           :  clean
+                    @$(RM) $(NAME)
+                    @(cd $(LIB) && $(MAKE) fclean)
+                    @$(ECHO) $(BOLD)$(RED)'> Executable             removed'$(E0M)
 
-re				:	fclean all
+re               :  fclean all
 
-ftlib			:
-					@(cd $(SUB_MAKE) && $(MAKE))
+ftlib            :
+                    @(cd $(LIB) && $(MAKE))
 
-mkdepo			:
-					@$(MKDIR) $(DIROBJ)
+init             :
+                    @$(GIT) submodule init
+                    @$(GIT) submodule update
 
-dependencies	:
-					sudo apt install -y $(DEPEND)
-
-.PHONY			:	all clean re fclean ftlib dependencies
+.PHONY           :  all clean re fclean ftlib
 
 -include $(DEPS)
