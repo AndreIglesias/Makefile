@@ -6,7 +6,7 @@
 #    By: ciglesia <ciglesia@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/20 17:00:07 by ciglesia          #+#    #+#              #
-#    Updated: 2023/02/25 10:44:41 by ciglesia         ###   ########.fr        #
+#    Updated: 2023/02/25 10:46:05 by ciglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -98,29 +98,29 @@ $(NAME)         :   ftlib $(OBJS)
                     @$(CC) $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB_INC)
                     @$(ECHO) $(BOLD)$(GREEN)'> '$(NAME)' Compiled'$(E0M)
 
-clean            :
+clean           :
                     @($(RM) $(OBJS))
                     @($(RM) $(DEPS))
                     @($(RM) $(DIROBJ))
                     @(cd $(LIB) && $(MAKE) clean)
                     @$(ECHO) $(BOLD)$(RED)'> '$(NAME)' directory        cleaned'$(E0M)
 
-all              :  $(NAME)
+all             :  $(NAME)
 
-fclean           :  clean
+fclean          :  clean
                     @$(RM) $(NAME)
                     @(cd $(LIB) && $(MAKE) fclean)
                     @$(ECHO) $(BOLD)$(RED)'> Executable             removed'$(E0M)
 
-re               :  fclean all
+re              :  fclean all
 
-ftlib            :
+ftlib           :
                     @(cd $(LIB) && $(MAKE))
 
-init             :
+init            :
                     @$(GIT) submodule init
                     @$(GIT) submodule update
 
-.PHONY           :  all clean re fclean ftlib
+.PHONY          :  all clean re fclean ftlib
 
 -include $(DEPS)
