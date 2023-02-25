@@ -8,7 +8,7 @@
 #    By: ciglesia <ciglesia@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/20 17:00:07 by ciglesia          #+#    #+#              #
-#    Updated: 2023/02/25 10:48:11 by ciglesia         ###   ########.fr        #
+#    Updated: 2023/02/25 11:32:50 by ciglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -29,14 +29,14 @@ LIB_INC     =   -L$(LIB_H) -lft             # Include library
 #****************** SRC *******************#
 
 DIRSRC      =   ./src/
-DIRFOO      :=   $(DIRSRC) #/foo/
+DIRFOO      :=  #$(DIRSRC)/foo/
 
-DIRS        :=   $(DIRSRC) $(DIRFOO)
+DIRS        :=  $(DIRSRC) $(DIRFOO)
 
 SRC         =   # main.c
 FOO         =
 
-SRCS        :=   $(SRC) $(FOO)
+SRCS        :=  $(SRC) $(FOO)
 
 #***************** DEPS ******************#
 
